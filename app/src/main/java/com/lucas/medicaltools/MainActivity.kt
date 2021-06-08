@@ -21,9 +21,7 @@ import mu.KotlinLogging
 private val logger = KotlinLogging.logger {}
 class MainActivity : AppCompatActivity() {
     private lateinit var medicalTools: List<MedicalTool>
-    private lateinit var medicalRecyclerView: RecyclerView
     private lateinit var medicalAdapter: MedicalToolAdapter
-    private lateinit var progressBar: ProgressBar
     private lateinit var searchView: SearchView
     private lateinit var binding: ActivityMainBinding
 
@@ -65,11 +63,10 @@ class MainActivity : AppCompatActivity() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({toolsResponse ->
                 medicalTools = toolsResponse
-                medicalRecyclerView = findViewById(R.id.medicalToolRecyclerView)
                 medicalAdapter = MedicalToolAdapter(medicalTools)
-                medicalRecyclerView.adapter = medicalAdapter
-                //Set the layout managet to position the item
-                medicalRecyclerView.layoutManager = LinearLayoutManager(this)
+                binding.medicalToolRecyclerView.adapter = medicalAdapter
+                //Set the layout manager to position the item
+                binding.medicalToolRecyclerView.layoutManager = LinearLayoutManager(this)
                 logger.debug { toolsResponse }
                 binding.progressBar1.visibility = View.GONE
             }, {error ->
