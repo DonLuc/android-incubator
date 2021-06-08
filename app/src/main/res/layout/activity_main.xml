@@ -24,8 +24,8 @@
         android:scrollbars="vertical"/>
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="@dimen/layout_height"
+        android:layout_marginTop="@dimen/layout_space"
         android:background="@android:color/darker_gray"/>
 
 </LinearLayout>

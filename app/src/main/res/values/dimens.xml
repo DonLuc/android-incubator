@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="layout_height">1dp</dimen>
+    <dimen name="layout_space">20dp</dimen>
+    <dimen name="layout_space_quarter">8dp</dimen>
+    <dimen name="none">0dp</dimen>
+    <dimen name="image_lb">70dp</dimen>
+</resources>

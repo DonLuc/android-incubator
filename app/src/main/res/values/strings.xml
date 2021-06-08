@@ -2,4 +2,6 @@
     <string name="app_name">Medical Tools</string>
     <string name="app_description">App description here</string>
     <string name="medical_tool_name">Tool Name</string>
+    <string name="available">AVAILABLE</string>
+    <string name="not_available">NOT AVAILABLE</string>
 </resources>

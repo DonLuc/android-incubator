@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lucas.medical_equip.repository.MedicalTool
 import com.lucas.medical_equip.service.RetrofitBuilder
+import com.lucas.medicaltools.databinding.ActivityMainBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import mu.KotlinLogging
@@ -24,11 +25,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var medicalAdapter: MedicalToolAdapter
     private lateinit var progressBar: ProgressBar
     private lateinit var searchView: SearchView
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        progressBar = findViewById(R.id.progressBar1)
+       binding = ActivityMainBinding.inflate(layoutInflater)
         getMedicalTools()
+        setContentView(binding.root)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -55,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("CheckResult")
     fun getMedicalTools() {
-        progressBar.visibility = View.VISIBLE
+        binding.progressBar1.visibility = View.VISIBLE
         val medTools = RetrofitBuilder.apiService.getMedicalEquipments()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -67,10 +71,10 @@ class MainActivity : AppCompatActivity() {
                 //Set the layout managet to position the item
                 medicalRecyclerView.layoutManager = LinearLayoutManager(this)
                 logger.debug { toolsResponse }
-                progressBar.visibility = View.GONE
+                binding.progressBar1.visibility = View.GONE
             }, {error ->
                 logger.error { error }
-                progressBar.visibility = View.GONE
+                binding.progressBar1.visibility = View.GONE
             })
     }
 }

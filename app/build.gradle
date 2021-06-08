@@ -1,11 +1,25 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+/*
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
 }
+*/
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
+
+    dataBinding {
+        enabled = true
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
 
     defaultConfig {
         applicationId "com.lucas.medicaltools"
@@ -58,4 +72,7 @@ dependencies {
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    kapt 'com.android.databinding:compiler:6.5'
+
 }

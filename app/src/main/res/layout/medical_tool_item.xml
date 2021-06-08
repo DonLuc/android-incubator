@@ -1,33 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <ImageView
-        android:id="@+id/medical_tool_image"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_margin="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/medical_tool_text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/medical_tool_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="@string/medical_tool_name"
-        android:textAppearance="?attr/textAppearanceHeadline5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/medical_tool_image"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -46,22 +17,10 @@
 
         <ImageView
             android:id="@+id/medical_tool_image"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="@dimen/image_lb"
+            android:layout_height="@dimen/image_lb"
             android:visibility="visible"
-            android:layout_margin="8dp" />
-        <!--
-        <TextView
-            android:id="@+id/medical_tool_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/medical_tool_name"
-            android:textAppearance="?attr/textAppearanceHeadline5"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/medical_tool_image"
-            app:layout_constraintTop_toTopOf="parent" />
-        -->
+            android:layout_margin="@dimen/layout_space_quarter" />
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -71,15 +30,15 @@
             android:orientation="vertical">
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/layout_height"
                 android:background="@android:color/darker_gray"/>
             <TextView
                 android:id="@+id/medical_tool_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="@dimen/layout_space_quarter"
+                android:layout_marginTop="@dimen/layout_space_quarter"
+                android:layout_marginBottom="@dimen/layout_height"
                 android:text="@string/medical_tool_name"
                 android:textAppearance="?attr/textAppearanceBody1"/>
 
@@ -87,15 +46,10 @@
                 android:id="@+id/medical_tool_avail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="0dp"
+                android:layout_marginLeft="@dimen/layout_space_quarter"
+                android:layout_marginTop="@dimen/none"
                 android:text="Availability"
                 android:textAppearance="?attr/textAppearanceCaption"/>
         </LinearLayout>
     </LinearLayout>
-    <!--
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>-->
 </LinearLayout>
