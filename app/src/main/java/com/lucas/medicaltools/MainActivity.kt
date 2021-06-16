@@ -17,6 +17,7 @@ import com.lucas.medicaltools.databinding.ActivityMainBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import mu.KotlinLogging
+import java.util.*
 
 private val logger = KotlinLogging.logger {}
 class MainActivity : AppCompatActivity() {
@@ -30,7 +31,9 @@ class MainActivity : AppCompatActivity() {
        binding = ActivityMainBinding.inflate(layoutInflater)
         getMedicalTools()
         setContentView(binding.root)
-
+        binding.btnSearch.setOnClickListener{
+            getMedicalTools()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -55,10 +58,17 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+
     @SuppressLint("CheckResult")
     fun getMedicalTools() {
+        val filterKey = binding.editTextSearch.text
         binding.progressBar1.visibility = View.VISIBLE
         val medTools = RetrofitBuilder.apiService.getMedicalEquipments()
+            .filter {
+                medicalTools ->
+                if (filterKey.isEmpty()) return@filter true
+                medicalTools[1].description.contains(filterKey, true)
+            }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({toolsResponse ->
