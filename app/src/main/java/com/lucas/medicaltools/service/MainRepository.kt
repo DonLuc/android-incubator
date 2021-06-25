@@ -27,8 +27,8 @@ object MainRepository {
         }
     }
 
-    fun getMedicalTools(): Observable<MainViewState>? //@NonNull io.reactivex.rxjava3.core.Observable<Observable<MainViewState>>?
-    {// {
+    fun getMedicalTools(): Observable<MainViewState>?
+    {
         val medTools = RetrofitBuilder.apiService
             return medTools.getMedicalEquipments()
                 .switchMap {
