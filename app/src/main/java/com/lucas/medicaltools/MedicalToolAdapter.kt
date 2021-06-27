@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MedicalToolAdapter(private var medicalTools: List<MedicalTool>) : RecyclerView.Adapter<MedicalToolAdapter.ViewHolder>(), Filterable {
+class MedicalToolAdapter(private var medicalTools: List<MedicalTool>) : RecyclerView.Adapter<MedicalToolAdapter.ViewHolder>() {
     var medicalToolsFiltered = ArrayList<MedicalTool>()
 
     init {
@@ -62,32 +62,5 @@ class MedicalToolAdapter(private var medicalTools: List<MedicalTool>) : Recycler
 
     private fun onItemClicked(medicalTool: MedicalTool, context: View) {
         Snackbar.make(context, medicalTool.description, Snackbar.LENGTH_LONG).show()
-    }
-
-    override fun getFilter(): Filter {
-        return object: Filter() {
-            override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val charString = constraint.toString()
-                if(charString.isEmpty()) {
-                    medicalToolsFiltered = medicalTools as ArrayList<MedicalTool>
-                } else {
-                    val resultList = ArrayList<MedicalTool>()
-                    for(medicalItem in medicalTools) {
-                        if(medicalItem.description.toLowerCase(Locale.ROOT).contains(charString.toLowerCase(Locale.ROOT))) {
-                            resultList.add(medicalItem)
-                        }
-                    }
-                    medicalToolsFiltered = resultList
-                }
-                val filterResults = FilterResults()
-                filterResults.values = medicalToolsFiltered
-                return filterResults
-            }
-
-            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                medicalToolsFiltered = results?.values as ArrayList<MedicalTool>
-                notifyDataSetChanged()
-            }
-        }
     }
 }

@@ -27,7 +27,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -71,10 +71,12 @@ dependencies {
 
     // Recyclerview
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    //RxRelay
+    implementation group: 'com.jakewharton.rxrelay2', name: 'rxrelay', version: '2.0.0'
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
-
+    implementation 'com.android.support:multidex:1.0.3'
     kapt 'com.android.databinding:compiler:6.5'
 
 }
