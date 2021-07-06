@@ -24,13 +24,6 @@ class MedicalToolAdapter(private var medicalTools: List<MedicalTool>) : Recycler
     }
     inner class ViewHolder(val binding: MedicalToolItemBinding) : RecyclerView.ViewHolder(binding.root)
 
-        // val medicalToolImage = itemView.findViewById<ImageView>(R.id.medical_tool_image)
-        // val medicalToolDescription = itemView.findViewById<TextView>(R.id.medical_tool_text)
-        // val isAvailable = itemView.findViewById<TextView>(R.id.medical_tool_avail)
-
-
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val context = parent.context

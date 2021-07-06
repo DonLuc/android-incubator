@@ -8,7 +8,8 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
 interface MainView: MvpView {
-    fun getMedicalToolsIntent(): Observable<MedicalTool>
-    fun getUsersIntent(): Observable<String>
+    val onScreenLoadIntent: Relay<Intent>
+    val onCreateHappenedIntent: PublishSubject<String>// Observable<String>
+    val useCapturedFilteringTextIntent: PublishSubject<String> //Observable<String>
     fun render(viewState: MainViewState)
 }
