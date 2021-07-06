@@ -1,29 +1,19 @@
 package com.lucas.medicaltools
 
-import android.annotation.SuppressLint
-import android.app.SearchManager
-import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
-import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.hannesdorfmann.mosby3.mvi.MviActivity
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import com.lucas.medical_equip.repository.MedicalTool
-import com.lucas.medical_equip.service.RetrofitBuilder
 import com.lucas.medicaltools.databinding.ActivityMainBinding
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import mu.KotlinLogging
-import java.util.*
+import timber.log.Timber
 
 private val logger = KotlinLogging.logger {}
 class MainActivity : MviActivity<MainView, MainPresenter>(), MainView {
@@ -35,18 +25,21 @@ class MainActivity : MviActivity<MainView, MainPresenter>(), MainView {
     private val onCreateHappenedSubject = PublishSubject.create<String>()
     private val useCapturedFilteringTextSubject = PublishSubject.create<String>()
     private val onScreenLoadRelay = PublishRelay.create<Intent>()
-
+    private var filterKey: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       binding = ActivityMainBinding.inflate(layoutInflater)
+        Timber.d("ACTIVITY: IN ON CREATE")
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //binding.btnSearch.setOnClickListener{
-        //}
     }
 
     override fun onResume() {
         super.onResume()
+        binding.btnSearch.setOnClickListener {
+            this.handleSearch()
+        }
         onScreenLoadRelay.accept(intent)
+        useCapturedFilteringTextSubject.onNext("")
     }
 
     override fun createPresenter() = MainPresenter()
@@ -62,18 +55,53 @@ class MainActivity : MviActivity<MainView, MainPresenter>(), MainView {
 
     override fun render(viewState: MainViewState) {
         when (viewState) {
-            is MainViewState.MedicalToolsState -> handleOnCreateHappened()
-            is MainViewState.MedicalToolsFilterState -> handleFilter()
+            is MainViewState.loadingState -> renderLoadingState()
+            is MainViewState.MedicalToolsState -> renderOnCreateHappenedState(viewState.medicalTools)
+            is MainViewState.MedicalToolsFilterState -> renderFilterState(viewState.medicalTools)
+            is MainViewState.errorState -> renderErrorState()
         }
     }
 
-    private fun handleOnCreateHappened() {
-        val filterKey = ""
+    private fun renderOnCreateHappenedState(medicalTools: List<MedicalTool>?) {
+        filterKey = ""
+        renderRecyclerView(medicalTools)
         onCreateHappenedSubject.onNext(filterKey)
+        dismissSpinner()
     }
 
-    private fun handleFilter() {
-        val filterKey = ""
+    private fun renderFilterState(medicalTools: List<MedicalTool>?) {
+        renderRecyclerView(medicalTools)
         useCapturedFilteringTextSubject.onNext(filterKey)
+    }
+
+    private fun renderLoadingState() {
+        showSpinner()
+    }
+
+    private fun showSpinner() {
+        binding.progressBar1.visibility = View.VISIBLE
+    }
+
+    private fun dismissSpinner() {
+        binding.progressBar1.visibility = View.GONE
+    }
+
+    private fun renderErrorState() {
+        Toast.makeText(this, resources.getString(R.string.error_state), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun handleSearch() {
+        filterKey = binding.editTextSearch.text.toString()
+        useCapturedFilteringTextSubject.onNext(filterKey)
+    }
+
+    private fun renderRecyclerView(medicalTools: List<MedicalTool>?) {
+        //medicalAdapter = medicalTools?.let { MedicalToolAdapter(it) }!!
+        if (medicalTools !== null) {
+            medicalAdapter = MedicalToolAdapter(medicalTools)
+            binding.medicalToolRecyclerView.adapter = medicalAdapter
+            //Set the layout manager to position the item
+            binding.medicalToolRecyclerView.layoutManager = LinearLayoutManager(this)
+        }
     }
 }

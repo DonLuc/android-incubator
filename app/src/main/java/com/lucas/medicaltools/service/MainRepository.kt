@@ -14,19 +14,37 @@ object MainRepository {
         return if (response.isSuccessful) {
             Observable.just(MainViewState.MedicalToolsState(medicalTools))
         } else {
-            var error = Exception(response.errorBody()?.string())
+            Observable.just(MainViewState.errorState)
+        }
+    }
 
-            Observable.just(MainViewState.ErrorState(error))
+    private fun mapFilteredMedicalTools(response: Response<List<MedicalTool>>): Observable<MainViewState> {
+        val medicalTools = response.body()
+        return if (response.isSuccessful) {
+            Observable.just(MainViewState.MedicalToolsFilterState(medicalTools))
+        } else {
+            Observable.just(MainViewState.errorState)
         }
     }
 
     fun getMedicalTools(filter: String): Observable<out MainViewState>
     {
+        if (filter.isNullOrBlank()) {
         val medTools = RetrofitBuilder.apiService
             return medTools.getMedicalEquipments()
                 .switchMap {
                     mapMedicalTools(it)
                 }
+                    .startWith(MainViewState.loadingState)
             .subscribeOn(Schedulers.io())
+        } else {
+            val medTools = RetrofitBuilder.apiService
+            return medTools.getMedicalEquipments()
+                    .switchMap {
+                        mapFilteredMedicalTools(it)
+                    }
+                    .startWith(MainViewState.loadingState)
+                    .subscribeOn(Schedulers.io())
+        }
     }
 }
