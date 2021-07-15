@@ -8,8 +8,8 @@ import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
 interface MainView: MvpView {
-    val onScreenLoadIntent: Relay<Intent>
+    val onScreenLoadIntent: PublishSubject<String>
     val onCreateHappenedIntent: PublishSubject<String>// Observable<String>
-    val useCapturedFilteringTextIntent: PublishSubject<String> //Observable<String>
+    val onToolsFiltered: PublishSubject<String> //Observable<String>
     fun render(viewState: MainViewState)
 }

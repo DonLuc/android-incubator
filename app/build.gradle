@@ -80,5 +80,5 @@ dependencies {
     kapt 'com.android.databinding:compiler:6.5'
     //Timber
     implementation group: 'com.jakewharton.timber', name: 'timber', version: '2.2.2'
-
+    implementation 'joda-time:joda-time:2.10.10'
 }

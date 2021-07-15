@@ -1,24 +1,20 @@
 package com.lucas.medicaltools
 
-import android.content.Context
 import android.graphics.Color
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import androidx.core.content.contentValuesOf
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.lucas.medical_equip.repository.MedicalTool
 import com.lucas.medicaltools.databinding.MedicalToolItemBinding
 import com.squareup.picasso.Picasso
-import java.util.*
-import kotlin.collections.ArrayList
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 
 class MedicalToolAdapter(private var medicalTools: List<MedicalTool>) : RecyclerView.Adapter<MedicalToolAdapter.ViewHolder>() {
     var medicalToolsFiltered = ArrayList<MedicalTool>()
-
+    private val selectedMedicalTool: PublishSubject<MedicalTool> = PublishSubject.create<MedicalTool>()
     init {
         medicalToolsFiltered = medicalTools as ArrayList<MedicalTool>
     }
@@ -53,7 +49,7 @@ class MedicalToolAdapter(private var medicalTools: List<MedicalTool>) : Recycler
         }
     }
 
-    private fun onItemClicked(medicalTool: MedicalTool, context: View) {
-        Snackbar.make(context, medicalTool.description, Snackbar.LENGTH_LONG).show()
+    fun getSelectedMedicalTool(): Observable<MedicalTool> {
+        return selectedMedicalTool.hide()
     }
 }

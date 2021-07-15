@@ -13,5 +13,5 @@ interface APIService {
 
     // fun getMedicalEquipments(): Observable<List<MedicalTool>>
 
-    fun getMedicalEquipments(): Observable<Response<List<MedicalTool>>>
+    fun getMedicalEquipments(): Observable<Response<MutableList<MedicalTool>>>
 }
