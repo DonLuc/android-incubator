@@ -10,25 +10,15 @@ import retrofit2.Response
 
 object MedicalToolsInteractor {
     lateinit var medicalToolCache: Response<List<MedicalTool>>
-    fun getMedicalTools(filter: String): Observable<MainViewState>? {
-        if (filter.isNullOrBlank()) {
+    fun getMedicalTools(filter: String): Observable<MainViewState> {
             return MedicalToolsRepository().getMedicalTools()
-                    ?.switchMap {
+                    .switchMap {
                         mapMedicalTools(it)
                     }
-                    ?.subscribeOn(Schedulers.io())
-        } else {
-            val medTools = RetrofitBuilder.apiService
-            return medTools.getMedicalEquipments()
-                    .switchMap {
-                        mapFilteredMedicalTools(it)
-                    }
-                    .startWith(MainViewState.LoadingState)
                     .subscribeOn(Schedulers.io())
-        }
     }
 
-    private fun mapMedicalTools(response: Response<MutableList<MedicalTool>>): Observable<MainViewState> {
+    private fun mapMedicalTools(response: Response<List<MedicalTool>>): Observable<MainViewState> {
         val medicalTools = response.body()
         return if (response.isSuccessful) {
             Observable.just(MainViewState.MedicalToolsState(medicalTools))

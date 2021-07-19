@@ -10,7 +10,6 @@ import com.lucas.medical_equip.repository.MedicalTool
 import com.lucas.medicaltools.databinding.ActivityMainBinding
 import io.reactivex.subjects.PublishSubject
 import mu.KotlinLogging
-import timber.log.Timber
 
 private val logger = KotlinLogging.logger {}
 
@@ -26,7 +25,6 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
     private var filterKey: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Timber.d("ACTIVITY: IN ON CREATE")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         //onScreenLoadIntent.onNext("")
