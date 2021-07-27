@@ -2,8 +2,10 @@ package com.lucas.medical_equip.service
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
+//import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
+
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitBuilder {
@@ -11,7 +13,8 @@ object RetrofitBuilder {
 
     private fun getRetrofit() = Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            //.addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
         .client(APIWorker.client)
         .build()

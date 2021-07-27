@@ -10,8 +10,5 @@ import retrofit2.http.Headers
 interface APIService {
     @Headers("Content-Type: application/json")
     @GET("/api/mobiletools/tools")
-
     fun getMedicalEquipments(): Observable<Response<List<MedicalTool>>>
-
-    //fun getMedicalEquipments(): Observable<Response<MutableList<MedicalTool>>>
 }

@@ -1,6 +1,7 @@
 package com.lucas.medicaltools
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -27,16 +28,16 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //onScreenLoadIntent.onNext("")
+
+        binding.btnSearch.setOnClickListener {
+            handleSearch()
+        }
+        Log.d("MESSAGE","ON CREATE")
     }
 
     override fun onResume() {
         super.onResume()
-        binding.btnSearch.setOnClickListener {
-            this.handleSearch()
-        }
-
-        onCreateHappenedSubject.onNext("")
+        onCreateHappenedSubject.onNext("Time")
     }
 
     override fun createPresenter() = MainPresenter()
@@ -54,6 +55,8 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
         when (viewState) {
             is MainViewState.LoadingState -> renderLoadingState()
             is MainViewState.MedicalToolsState -> renderOnCreateHappenedState(viewState.medicalTools)
+            is MainViewState.ErrorState -> renderErrorState()
+            is MainViewState.MedicalToolsFilterState -> renderFilterState(viewState.medicalTools)
             //is MainViewState.MedicalToolsFilterState -> renderFilterState(viewState.medicalTools)
             //is MainViewState.errorState -> renderErrorState()
             else -> return
@@ -61,19 +64,21 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
     }
 
     private fun renderOnCreateHappenedState(medicalTools: List<MedicalTool>?) {
-        filterKey = ""
         renderRecyclerView(medicalTools)
-        onCreateHappenedSubject.onNext(filterKey)
         dismissSpinner()
     }
 
+
     private fun renderFilterState(medicalTools: List<MedicalTool>?) {
         renderRecyclerView(medicalTools)
-        useCapturedFilteringTextSubject.onNext(filterKey)
     }
 
     private fun renderLoadingState() {
-        showSpinner()
+        //showSpinner()
+        onCreateHappenedSubject.onNext("Time")
+        //onScreenLoadIntent.hide()
+
+        //dismissSpinner()
     }
 
     private fun showSpinner() {
@@ -85,12 +90,14 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
     }
 
     private fun renderErrorState() {
-        Toast.makeText(this, resources.getString(R.string.error_state), Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, resources.getString(R.string.error_state), Toast.LENGTH_LONG).show()
     }
 
     private fun handleSearch() {
         filterKey = binding.editTextSearch.text.toString()
+        // Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show()
         useCapturedFilteringTextSubject.onNext(filterKey)
+        //onScreenLoadIntent.onNext("loading")
     }
 
     private fun renderRecyclerView(medicalTools: List<MedicalTool>?) {
