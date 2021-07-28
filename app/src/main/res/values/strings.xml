@@ -9,4 +9,5 @@
     <string name="button_positive">Yes</string>
     <string name="dialog_message">Are you sure you want to select %1$s?</string>
     <string name="dialog_title">Select %1$s?</string>
+    <string name="search_keyword">Search keyword</string>
 </resources>

@@ -11,15 +11,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <EditText
+        <!--<EditText
+            android:layout_width="match_parent"
+            android:hint="@string/search_keyword"
+            android:layout_marginHorizontal="@dimen/card_margin_horizon"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextSearch" />-->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editTextSearch" />
+            android:hint="@string/search_keyword"
+            android:layout_marginTop="@dimen/card_margin_vert"
+            app:boxBackgroundColor="@color/white"
+            android:layout_marginHorizontal="@dimen/card_margin_horizon">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
         <Button
             android:id="@+id/btnSearch"
+            android:layout_marginHorizontal="@dimen/card_margin_horizon"
             android:layout_width="match_parent"
             android:text="Search"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/teal_200"/>
     </LinearLayout>
 
     <ProgressBar

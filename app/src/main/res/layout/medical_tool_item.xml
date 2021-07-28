@@ -6,6 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
+    <com.google.android.material.card.MaterialCardView android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="@dimen/card_margin_horizon"
+        android:layout_marginVertical="@dimen/card_margin_vert"
+        app:cardElevation="@dimen/card_margin_vert"
+        app:strokeColor="@color/grey"
+        app:cardCornerRadius="@dimen/card_margin_vert"
+        app:strokeWidth="1dp"
+        >
+
+
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -28,10 +39,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <View
+            <!--<View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/layout_height"
-                android:background="@android:color/darker_gray"/>
+                android:background="@android:color/darker_gray"/>-->
             <TextView
                 android:id="@+id/medical_tool_text"
                 android:layout_width="wrap_content"
@@ -40,16 +51,17 @@
                 android:layout_marginTop="@dimen/layout_space_quarter"
                 android:layout_marginBottom="@dimen/layout_height"
                 android:text="@string/medical_tool_name"
-                android:textAppearance="?attr/textAppearanceBody1"/>
+                android:textAppearance="?attr/textAppearanceHeadline6"/>
 
             <TextView
                 android:id="@+id/medical_tool_avail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/layout_space_quarter"
-                android:layout_marginTop="@dimen/none"
+                android:layout_marginTop="@dimen/card_margin_vert"
                 android:text="Availability"
                 android:textAppearance="?attr/textAppearanceCaption"/>
         </LinearLayout>
     </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
