@@ -1,5 +1,7 @@
 package com.lucas.medicaltools
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hannesdorfmann.mosby3.mvi.MviActivity
 import com.lucas.medical_equip.repository.MedicalTool
 import com.lucas.medicaltools.databinding.ActivityMainBinding
+import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
 import mu.KotlinLogging
 
@@ -22,6 +25,7 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
     private lateinit var binding: ActivityMainBinding
     private val onCreateHappenedSubject = PublishSubject.create<String>()
     private val useCapturedFilteringTextSubject = PublishSubject.create<String>()
+    private var subscribe: Disposable? = null
 
     private var filterKey: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +37,7 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
             handleSearch()
         }
         Log.d("MESSAGE","ON CREATE")
+        //onMedicalItemClick()
     }
 
     override fun onResume() {
@@ -100,6 +105,30 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
             binding.medicalToolRecyclerView.adapter = medicalAdapter
             //Set the layout manager to position the item
             binding.medicalToolRecyclerView.layoutManager = LinearLayoutManager(this)
+            onMedicalItemClick()
         }
+    }
+
+    private fun onMedicalItemClick() {
+        var that = this
+        subscribe = medicalAdapter.clickEvent
+            .subscribe {
+                Toast.makeText(that, it.description, Toast.LENGTH_LONG).show()
+                AlertDialog.Builder(that)
+                    .setTitle(getString(R.string.dialog_title, it.description))
+                    .setMessage(getString(R.string.dialog_message, it.description))
+                    .setPositiveButton(R.string.button_positive, DialogInterface.OnClickListener{dialog, id ->
+                        Toast.makeText(that, it.description, Toast.LENGTH_LONG).show()
+                    })
+                    .setNegativeButton(R.string.button_negative, DialogInterface.OnClickListener{dialog, id ->
+                        //TODO
+                    })
+                    .show()
+            }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        subscribe?.dispose()
     }
 }

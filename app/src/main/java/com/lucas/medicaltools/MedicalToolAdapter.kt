@@ -15,13 +15,19 @@ import io.reactivex.subjects.PublishSubject
 class MedicalToolAdapter(private var medicalTools: List<MedicalTool>) : RecyclerView.Adapter<MedicalToolAdapter.ViewHolder>() {
     var medicalToolsFiltered = ArrayList<MedicalTool>()
     private val selectedMedicalTool: PublishSubject<MedicalTool> = PublishSubject.create<MedicalTool>()
-
+    private val clickSubject = PublishSubject.create<MedicalTool>()
     init {
         medicalToolsFiltered = medicalTools as ArrayList<MedicalTool>
     }
 
-
-    inner class ViewHolder(val binding: MedicalToolItemBinding) : RecyclerView.ViewHolder(binding.root)
+    val clickEvent: Observable<MedicalTool> = clickSubject
+    inner class ViewHolder(val binding: MedicalToolItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                clickSubject.onNext(medicalToolsFiltered[layoutPosition])
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
