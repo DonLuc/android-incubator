@@ -14,7 +14,6 @@ object RetrofitBuilder {
     private fun getRetrofit() = Retrofit.Builder()
         .baseUrl(BASE_URL)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            //.addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
         .client(APIWorker.client)
         .build()

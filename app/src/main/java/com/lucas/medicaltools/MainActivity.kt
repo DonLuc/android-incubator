@@ -57,8 +57,6 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
             is MainViewState.MedicalToolsState -> renderOnCreateHappenedState(viewState.medicalTools)
             is MainViewState.ErrorState -> renderErrorState()
             is MainViewState.MedicalToolsFilterState -> renderFilterState(viewState.medicalTools)
-            //is MainViewState.MedicalToolsFilterState -> renderFilterState(viewState.medicalTools)
-            //is MainViewState.errorState -> renderErrorState()
             else -> return
         }
     }
@@ -74,11 +72,9 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
     }
 
     private fun renderLoadingState() {
-        //showSpinner()
+        showSpinner()
         onCreateHappenedSubject.onNext("Time")
-        //onScreenLoadIntent.hide()
-
-        //dismissSpinner()
+        dismissSpinner()
     }
 
     private fun showSpinner() {
@@ -95,13 +91,10 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
 
     private fun handleSearch() {
         filterKey = binding.editTextSearch.text.toString()
-        // Toast.makeText(this, "Test", Toast.LENGTH_SHORT).show()
         useCapturedFilteringTextSubject.onNext(filterKey)
-        //onScreenLoadIntent.onNext("loading")
     }
 
     private fun renderRecyclerView(medicalTools: List<MedicalTool>?) {
-        //medicalAdapter = medicalTools?.let { MedicalToolAdapter(it) }!!
         if (medicalTools !== null) {
             medicalAdapter = MedicalToolAdapter(medicalTools)
             binding.medicalToolRecyclerView.adapter = medicalAdapter

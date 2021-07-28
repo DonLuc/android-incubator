@@ -52,7 +52,7 @@ object MedicalToolsInteractor {
             storeToolCacheCopy = medicalToolCache as MutableList<MedicalTool>
             storeToolCache = mutableListOf()
             for (tool in storeToolCacheCopy) {
-                if (tool.description.contains(filterString)) {
+                if (tool.description.toLowerCase().contains(filterString.toLowerCase())) {
                     storeToolCache.add(tool)
                 }
             }

@@ -15,9 +15,12 @@ import io.reactivex.subjects.PublishSubject
 class MedicalToolAdapter(private var medicalTools: List<MedicalTool>) : RecyclerView.Adapter<MedicalToolAdapter.ViewHolder>() {
     var medicalToolsFiltered = ArrayList<MedicalTool>()
     private val selectedMedicalTool: PublishSubject<MedicalTool> = PublishSubject.create<MedicalTool>()
+
     init {
         medicalToolsFiltered = medicalTools as ArrayList<MedicalTool>
     }
+
+
     inner class ViewHolder(val binding: MedicalToolItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -49,7 +52,4 @@ class MedicalToolAdapter(private var medicalTools: List<MedicalTool>) : Recycler
         }
     }
 
-    fun getSelectedMedicalTool(): Observable<MedicalTool> {
-        return selectedMedicalTool.hide()
-    }
 }
