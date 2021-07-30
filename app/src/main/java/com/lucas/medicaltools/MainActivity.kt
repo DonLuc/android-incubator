@@ -47,8 +47,6 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
 
     override fun createPresenter() = MainPresenter()
 
-    override val onScreenLoadIntent: PublishSubject<String>
-        get() = onScreenLoadIntent
     override val onCreateHappenedIntent: PublishSubject<String>
         get() = onCreateHappenedSubject
 
@@ -58,7 +56,6 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
 
     override fun render(viewState: MainViewState) {
         when (viewState) {
-            is MainViewState.LoadingState -> renderLoadingState()
             is MainViewState.MedicalToolsState -> renderOnCreateHappenedState(viewState.medicalTools)
             is MainViewState.ErrorState -> renderErrorState()
             is MainViewState.MedicalToolsFilterState -> renderFilterState(viewState.medicalTools)
@@ -68,18 +65,10 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
 
     private fun renderOnCreateHappenedState(medicalTools: List<MedicalTool>?) {
         renderRecyclerView(medicalTools)
-        dismissSpinner()
     }
-
 
     private fun renderFilterState(medicalTools: List<MedicalTool>?) {
         renderRecyclerView(medicalTools)
-    }
-
-    private fun renderLoadingState() {
-        showSpinner()
-        onCreateHappenedSubject.onNext("Time")
-        dismissSpinner()
     }
 
     private fun showSpinner() {
@@ -100,12 +89,17 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
     }
 
     private fun renderRecyclerView(medicalTools: List<MedicalTool>?) {
+        showSpinner()
         if (medicalTools !== null) {
             medicalAdapter = MedicalToolAdapter(medicalTools)
             binding.medicalToolRecyclerView.adapter = medicalAdapter
             //Set the layout manager to position the item
             binding.medicalToolRecyclerView.layoutManager = LinearLayoutManager(this)
             onMedicalItemClick()
+            dismissSpinner()
+        } else {
+            // TODO: An alert to show make a user aware that the data was returned
+            dismissSpinner()
         }
     }
 
