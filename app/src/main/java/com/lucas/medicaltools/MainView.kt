@@ -8,6 +8,5 @@ import io.reactivex.subjects.PublishSubject
 
 interface MainView: MvpView {
     val onCreateHappenedIntent: PublishSubject<String>
-    val onToolsFiltered: PublishSubject<String>
     fun render(viewState: MainViewState)
 }

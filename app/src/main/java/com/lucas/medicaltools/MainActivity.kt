@@ -19,9 +19,7 @@ private val logger = KotlinLogging.logger {}
 
 class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
 
-    private lateinit var medicalTools: List<MedicalTool>
     private lateinit var medicalAdapter: MedicalToolAdapter
-    private lateinit var searchView: SearchView
     private lateinit var binding: ActivityMainBinding
     private val onCreateHappenedSubject = PublishSubject.create<String>()
     private val useCapturedFilteringTextSubject = PublishSubject.create<String>()
@@ -36,13 +34,11 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
         binding.btnSearch.setOnClickListener {
             handleSearch()
         }
-        Log.d("MESSAGE","ON CREATE")
-        //onMedicalItemClick()
     }
 
     override fun onResume() {
         super.onResume()
-        onCreateHappenedSubject.onNext("Time")
+        onCreateHappenedSubject.onNext("")
     }
 
     override fun createPresenter() = MainPresenter()
@@ -50,15 +46,11 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
     override val onCreateHappenedIntent: PublishSubject<String>
         get() = onCreateHappenedSubject
 
-    override val onToolsFiltered: PublishSubject<String>
-        get() = useCapturedFilteringTextSubject
-
 
     override fun render(viewState: MainViewState) {
         when (viewState) {
             is MainViewState.MedicalToolsState -> renderOnCreateHappenedState(viewState.medicalTools)
             is MainViewState.ErrorState -> renderErrorState()
-            is MainViewState.MedicalToolsFilterState -> renderFilterState(viewState.medicalTools)
             else -> return
         }
     }
@@ -85,7 +77,7 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
 
     private fun handleSearch() {
         filterKey = binding.editTextSearch.text.toString()
-        useCapturedFilteringTextSubject.onNext(filterKey)
+        onCreateHappenedSubject.onNext(filterKey)
     }
 
     private fun renderRecyclerView(medicalTools: List<MedicalTool>?) {

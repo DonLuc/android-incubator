@@ -15,13 +15,9 @@ class MainPresenter: MviBasePresenter<MainView, MainViewState>() {
             .switchMap { MedicalToolsInteractor.getMedicalTools(it)}
             .subscribeOn(Schedulers.io())
             .onErrorReturn { MainViewState.ErrorState }
-        val medicalToolsFilteredState: Observable<MainViewState> = intent(MainView::onToolsFiltered)
-            .switchMap { MedicalToolsInteractor.mapFilteredMedicalTools(it)}
-            .subscribeOn(Schedulers.io())
-
 
         val allIntents = Observable
-            .mergeArray(medicalToolsState, medicalToolsFilteredState)
+            .mergeArray(medicalToolsState)
             .observeOn(AndroidSchedulers.mainThread())
 
         subscribeViewState(allIntents, MainView::render)

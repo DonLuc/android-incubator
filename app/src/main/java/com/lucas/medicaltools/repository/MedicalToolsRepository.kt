@@ -5,9 +5,22 @@ import com.lucas.medical_equip.service.RetrofitBuilder
 import io.reactivex.Observable
 import retrofit2.Response
 
-class MedicalToolsRepository() {
+object MedicalToolsRepository {
+    var medicalToolCache: Observable<Response<List<MedicalTool>>>? = null
+
     fun getMedicalTools(): Observable<Response<List<MedicalTool>>> {
-        var medToolsService = RetrofitBuilder.apiService
-        return medToolsService.getMedicalEquipments()
+        return if (medicalToolCache === null) {
+            var medToolsService = RetrofitBuilder.apiService
+            val medToolServiceResponse = medToolsService.getMedicalEquipments()
+            cacheMedicalTools(medToolServiceResponse)
+            medToolServiceResponse
+        } else {
+            medicalToolCache!!
+        }
     }
+
+    private fun cacheMedicalTools(tools: Observable<Response<List<MedicalTool>>>) {
+        medicalToolCache = tools
+    }
+
 }
