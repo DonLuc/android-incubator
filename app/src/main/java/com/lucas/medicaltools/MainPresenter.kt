@@ -18,6 +18,7 @@ class MainPresenter: MviBasePresenter<MainView, MainViewState>() {
 
         val allIntents = Observable
             .mergeArray(medicalToolsState)
+            .startWith(MainViewState.LoadingState)
             .observeOn(AndroidSchedulers.mainThread())
 
         subscribeViewState(allIntents, MainView::render)

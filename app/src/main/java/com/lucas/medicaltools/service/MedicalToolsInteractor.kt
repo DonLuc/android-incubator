@@ -8,35 +8,28 @@ import io.reactivex.schedulers.Schedulers
 import retrofit2.Response
 
 object MedicalToolsInteractor {
-    lateinit var tempToolsArray: MutableList<MedicalTool>
-
+    lateinit var medicalToolsFilterMap: List<MedicalTool>
     fun getMedicalTools(filter: String): Observable<MainViewState> {
-            return MedicalToolsRepository.getMedicalTools()
-                .switchMap {
-                    mapMedicalTools(it, filter)
-                }
-                .subscribeOn(Schedulers.io())
+        return MedicalToolsRepository.getMedicalTools()
+            .switchMap {
+                mapMedicalTools(it, filter)
+            }
+            .subscribeOn(Schedulers.io())
     }
 
-    private fun mapMedicalTools(response: Response<List<MedicalTool>>, filter: String): Observable<MainViewState> {
+    private fun mapMedicalTools(
+        response: Response<List<MedicalTool>>,
+        filter: String
+    ): Observable<MainViewState> {
         val medicalTools = response.body()
-
         return if (response.isSuccessful) {
-            tempToolsArray = mutableListOf()
             if (medicalTools != null) {
-                if (!filter.isNullOrBlank()) {
-                    for (tool in medicalTools) {
-                        if (tool.description.toLowerCase().contains(filter.toLowerCase())) {
-                            tempToolsArray.add(tool)
-                        }
-                    }
-                } else {
-                    tempToolsArray = medicalTools as MutableList<MedicalTool>
+                medicalToolsFilterMap = medicalTools.filter { (key, value) ->
+                    value.toLowerCase()
+                        .contains(filter.toLowerCase())
                 }
-            } else {
-                tempToolsArray = medicalTools as MutableList<MedicalTool>
             }
-            Observable.just(MainViewState.MedicalToolsState(tempToolsArray))
+            Observable.just(MainViewState.MedicalToolsState(medicalToolsFilterMap))
         } else {
             Observable.just(MainViewState.ErrorState)
         }

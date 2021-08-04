@@ -3,10 +3,8 @@ package com.lucas.medicaltools
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hannesdorfmann.mosby3.mvi.MviActivity
 import com.lucas.medical_equip.repository.MedicalTool
@@ -21,8 +19,9 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
 
     private lateinit var medicalAdapter: MedicalToolAdapter
     private lateinit var binding: ActivityMainBinding
-    private val onCreateHappenedSubject = PublishSubject.create<String>()
+    private val OnDataFilteredSubject = PublishSubject.create<String>()
     private val useCapturedFilteringTextSubject = PublishSubject.create<String>()
+    private val onScreenLoadingSubject = PublishSubject.create<String>()
     private var subscribe: Disposable? = null
 
     private var filterKey: String = ""
@@ -38,29 +37,33 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
 
     override fun onResume() {
         super.onResume()
-        onCreateHappenedSubject.onNext("")
+        OnDataFilteredSubject.onNext("")
+        //onScreenLoadingSubject.onNext("")
     }
 
     override fun createPresenter() = MainPresenter()
 
     override val onCreateHappenedIntent: PublishSubject<String>
-        get() = onCreateHappenedSubject
+        get() = OnDataFilteredSubject
 
+    override val onScreenLoadIntent: PublishSubject<String>
+        get() = onScreenLoadingSubject
 
     override fun render(viewState: MainViewState) {
         when (viewState) {
-            is MainViewState.MedicalToolsState -> renderOnCreateHappenedState(viewState.medicalTools)
+            is MainViewState.LoadingState -> renderLoadingState()
+            is MainViewState.MedicalToolsState -> renderMedicalTools(viewState.medicalTools)
             is MainViewState.ErrorState -> renderErrorState()
             else -> return
         }
     }
 
-    private fun renderOnCreateHappenedState(medicalTools: List<MedicalTool>?) {
-        renderRecyclerView(medicalTools)
+    private fun renderMedicalTools(medicalTools: List<MedicalTool>?) {
+        populateRecyclerView(medicalTools)
     }
 
     private fun renderFilterState(medicalTools: List<MedicalTool>?) {
-        renderRecyclerView(medicalTools)
+        populateRecyclerView(medicalTools)
     }
 
     private fun showSpinner() {
@@ -76,12 +79,12 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
     }
 
     private fun handleSearch() {
+        onScreenLoadingSubject.onNext("")
         filterKey = binding.editTextSearch.text.toString()
-        onCreateHappenedSubject.onNext(filterKey)
+        OnDataFilteredSubject.onNext(filterKey)
     }
 
-    private fun renderRecyclerView(medicalTools: List<MedicalTool>?) {
-        showSpinner()
+    private fun populateRecyclerView(medicalTools: List<MedicalTool>?) {
         if (medicalTools !== null) {
             medicalAdapter = MedicalToolAdapter(medicalTools)
             binding.medicalToolRecyclerView.adapter = medicalAdapter
@@ -111,6 +114,10 @@ class MainActivity() : MviActivity<MainView, MainPresenter>(), MainView {
                     })
                     .show()
             }
+    }
+
+    private fun renderLoadingState() {
+        showSpinner()
     }
 
     override fun onDestroy() {

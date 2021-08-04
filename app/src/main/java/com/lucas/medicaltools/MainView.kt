@@ -8,5 +8,6 @@ import io.reactivex.subjects.PublishSubject
 
 interface MainView: MvpView {
     val onCreateHappenedIntent: PublishSubject<String>
+    val onScreenLoadIntent: PublishSubject<String>
     fun render(viewState: MainViewState)
 }
