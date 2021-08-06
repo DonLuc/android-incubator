@@ -69,6 +69,8 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.14.9'
     implementation 'com.jakewharton.rxbinding2:rxbinding:2.1.1'
     implementation 'com.hannesdorfmann.mosby3:mvi:3.1.0'
+    //mockito-core
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.16.0'
 
     // Recyclerview
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
