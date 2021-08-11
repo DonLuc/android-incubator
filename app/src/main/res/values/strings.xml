@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Medical Tools</string>
     <string name="app_description">App description here</string>
+    <string name="medical_tool_name">Tool Name</string>
+    <string name="available">AVAILABLE</string>
+    <string name="not_available">NOT AVAILABLE</string>
+    <string name="error_state">Something went wrong while trying to fetch data, please retry!</string>
+    <string name="button_negative">No</string>
+    <string name="button_positive">Yes</string>
+    <string name="dialog_message">Are you sure you want to select %1$s?</string>
+    <string name="dialog_title">Select %1$s?</string>
+    <string name="search_keyword">Search keyword</string>
 </resources>
